@@ -96,10 +96,10 @@
     "name": "Ollama LLM Engine",
     "category": "AI & ML",
     "type": "docker",
-    "author": "Ollama",
+    "author": "Ollama / Alpine",
     "version": "latest",
     "iconCodePoint": 58640,
-    "image": "ollama/ollama:latest",
+    "image": "alpine/ollama:latest",
     "ports": [
       {
         "host": 11434,
@@ -107,7 +107,7 @@
       }
     ],
     "description": "Run local open-source Large Language Models (Llama 3, Phi-3, Mistral, Gemma) directly on ARM64.",
-    "notes": "Large Download (~2.7 GB): Ollama requires ~2.7 GB download and ~5.5 GB disk space. It can take 15-30+ minutes on mobile Wi-Fi under QEMU emulation. Tap 'Background' or run 'docker pull ollama/ollama:latest' in Terminal for real-time progress. API listens on port 11434.",
+    "notes": "Lightweight build (~72 MB): CPU-optimized Alpine Ollama engine that downloads in seconds and saves disk space. API listens on port 11434. Pull small models like \"ollama pull smollm:135m\" to run on mobile.",
     "isCustom": false
   },
   {
