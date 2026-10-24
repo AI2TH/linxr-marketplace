@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Linxr Marketplace Recipe Catalog",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "name", "category", "type", "description"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z0-9_-]+$",
+        "description": "Unique alphanumeric identifier for the recipe"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 2,
+        "description": "Human-readable display title"
+      },
+      "category": {
+        "type": "string",
+        "enum": [
+          "Kubernetes & DevOps",
+          "Dev Environments",
+          "AI & ML",
+          "Web & Cloud",
+          "Databases",
+          "IoT & Network",
+          "Utilities"
+        ]
+      },
+      "type": {
+        "type": "string",
+        "enum": ["docker", "script"]
+      },
+      "author": {
+        "type": "string"
+      },
+      "version": {
+        "type": "string"
+      },
+      "iconCodePoint": {
+        "type": "integer",
+        "description": "Flutter MaterialIcons hexadecimal or decimal codepoint"
+      },
+      "iconFontFamily": {
+        "type": ["string", "null"]
+      },
+      "image": {
+        "type": "string",
+        "description": "Docker Hub / OCI registry image identifier (required if type is docker)"
+      },
+      "command": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "ports": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["host", "container"],
+          "properties": {
+            "host": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65535
+            },
+            "container": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65535
+            }
+          }
+        }
+      },
+      "env": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["key", "value"],
+          "properties": {
+            "key": { "type": "string" },
+            "value": { "type": "string" }
+          }
+        }
+      },
+      "network": {
+        "type": "string",
+        "enum": ["host", "bridge", "none"],
+        "default": "host"
+      },
+      "script": {
+        "type": "string",
+        "description": "Shell commands executed inside Alpine VM (required if type is script)"
+      },
+      "notes": {
+        "type": "string",
+        "description": "Post-deployment instructions, URLs, or command tips for the user"
+      },
+      "isCustom": {
+        "type": "boolean",
+        "default": false
+      }
+    }
+  }
+}
