@@ -107,7 +107,7 @@
       }
     ],
     "description": "Run local open-source Large Language Models (Llama 3, Phi-3, Mistral, Gemma) directly on ARM64.",
-    "notes": "Ollama API server runs on port 11434. To pull a model, run \"docker exec <container_name> ollama pull phi3\" via Terminal.",
+    "notes": "Large Download (~2.7 GB): Ollama requires ~2.7 GB download and ~5 GB disk space. It may take 5-10 minutes on mobile Wi-Fi. For real-time download progress, run 'docker pull ollama/ollama:latest' in Terminal. API listens on port 11434.",
     "isCustom": false
   },
   {
