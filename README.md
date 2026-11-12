@@ -96,4 +96,4 @@ To contribute a new Docker container or Alpine setup script:
 
 ## 📜 License
 
-MIT License. Copyright (c) 2026 AI2TH.
+Copyright (C) 2026 AI2TH. This project is licensed under the **GNU General Public License v3.0**. See [LICENSE](LICENSE) for the full text.
