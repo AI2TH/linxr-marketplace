@@ -273,12 +273,12 @@
         "container": 5060
       },
       {
-        "host": 8088,
+        "host": 8089,
         "container": 8088
       }
     ],
     "description": "Containerized Asterisk 20 PBX telephony server. Run isolated SIP PBX in Docker or daemonless FastTrack OCI mode.",
-    "notes": "Runs Asterisk inside an isolated container. Connect SIP softphones to port 5060. WebRTC/HTTP listens on port 8088. View channel status with 'asterisk -rvvv' via Terminal.",
+    "notes": "Runs Asterisk inside an isolated container. Connect SIP softphones to port 5060. WebRTC/HTTP listens on port 8088 inside the VM; to reach it from the phone, add a port forward from phone port 8089 to VM port 8088 in Linxr (phone port 8088 already forwards to VM port 80). View channel status with 'asterisk -rvvv' via Terminal.",
     "isCustom": false
   },
   {
@@ -297,11 +297,11 @@
         "container": 5060
       },
       {
-        "host": 8088,
+        "host": 8089,
         "container": 8088
       }
     ],
-    "notes": "Native Asterisk PBX listening on port 5060 (SIP UDP/TCP) and 8088 (HTTP/WebSockets). Connect any SIP softphone (Linphone, Zoiper, MicroSIP) to 127.0.0.1:5060. Manage dialplan via /etc/asterisk/extensions.conf.",
+    "notes": "Native Asterisk PBX listening on port 5060 (SIP UDP/TCP) and 8088 (HTTP/WebSockets) inside the VM. To reach them from the phone, add TCP port forwards for 5060 and from phone port 8089 to VM port 8088 in Linxr (phone port 8088 already forwards to VM port 80). Connect any SIP softphone (Linphone, Zoiper, MicroSIP) to 127.0.0.1:5060. Manage dialplan via /etc/asterisk/extensions.conf.",
     "isCustom": false
   },
   {
