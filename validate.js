@@ -33,6 +33,18 @@ if (!Array.isArray(recipes)) {
 const ids = new Set();
 let hasErrors = false;
 
+// Recipes run as root in the Linxr VM. apk verifies package signatures, but a
+// plain-http repository still exposes which packages are installed and lets a
+// network attacker serve stale indexes, so recipes must keep apk on https.
+//   - a script that edits /etc/apk/repositories and mentions http: (for
+//     example sed 's/https:/http:/g' /etc/apk/repositories)
+//   - an http:// Alpine mirror anywhere
+function downgradesApkToHttp(text) {
+  if (typeof text !== 'string') return false;
+  if (/apk\/repositories/.test(text) && /\bhttp:/.test(text)) return true;
+  return /http:\/\/[^\s'"]*\/alpine\//.test(text);
+}
+
 recipes.forEach((item, index) => {
   const prefix = `Recipe #${index + 1} (${item.id || 'unnamed'}):`;
 
@@ -68,6 +80,12 @@ recipes.forEach((item, index) => {
 
   if (item.type === 'script' && (!item.script || typeof item.script !== 'string')) {
     console.error(`❌ ${prefix} "script" is required for script recipes`);
+    hasErrors = true;
+  }
+
+  const commandText = Array.isArray(item.command) ? item.command.join(' ') : '';
+  if (downgradesApkToHttp(item.script) || downgradesApkToHttp(commandText)) {
+    console.error(`❌ ${prefix} switches apk to plain http; keep https apk mirrors`);
     hasErrors = true;
   }
 
