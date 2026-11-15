@@ -41,6 +41,7 @@ To contribute a new Docker container or Alpine setup script:
    ```bash
    node validate.js
    ```
+   The validator rejects host ports that Linxr uses itself: 2222 (SSH) and 7081 (VM API) always, and 5900, 6080, 8088 and 11434 unless the mapping matches Linxr's own forward (5900→5900, 6080→6080, 8088→80, 11434→11434).
 4. Submit a Pull Request.
 
 ### Docker Recipe Example

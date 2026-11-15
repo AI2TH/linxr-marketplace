@@ -33,6 +33,23 @@ if (!Array.isArray(recipes)) {
 const ids = new Set();
 let hasErrors = false;
 
+// Host ports that Linxr itself forwards from the phone into the VM
+// (VmManager.portForwards in AI2TH/Linxr). SSH and the VM API can never be
+// used by a recipe. The other defaults may only be declared with the same
+// mapping Linxr already sets up, so a recipe cannot claim a phone port that
+// actually leads to a different service (see AI2TH/Linxr#31).
+const ALWAYS_RESERVED_HOST_PORTS = new Map([
+  [2222, 'SSH'],
+  [7081, 'Linxr VM API'],
+]);
+const DEFAULT_FORWARDS = new Map([
+  // host port -> guest port Linxr forwards it to
+  [5900, 5900],   // Virtual Desktop VNC
+  [6080, 6080],   // Virtual Desktop noVNC
+  [8088, 80],     // HTTP (phone 8088 -> VM 80)
+  [11434, 11434], // Ollama
+]);
+
 recipes.forEach((item, index) => {
   const prefix = `Recipe #${index + 1} (${item.id || 'unnamed'}):`;
 
@@ -75,6 +92,14 @@ recipes.forEach((item, index) => {
     item.ports.forEach((p, pIdx) => {
       if (typeof p.host !== 'number' || typeof p.container !== 'number') {
         console.error(`❌ ${prefix} port definition #${pIdx + 1} must specify numeric host and container ports`);
+        hasErrors = true;
+        return;
+      }
+      if (ALWAYS_RESERVED_HOST_PORTS.has(p.host)) {
+        console.error(`❌ ${prefix} port definition #${pIdx + 1} uses host port ${p.host}, which is reserved for ${ALWAYS_RESERVED_HOST_PORTS.get(p.host)} by Linxr`);
+        hasErrors = true;
+      } else if (DEFAULT_FORWARDS.has(p.host) && p.container !== DEFAULT_FORWARDS.get(p.host)) {
+        console.error(`❌ ${prefix} port definition #${pIdx + 1} maps host port ${p.host} to ${p.container}, but Linxr already forwards host ${p.host} to VM port ${DEFAULT_FORWARDS.get(p.host)}; pick a free host port`);
         hasErrors = true;
       }
     });
